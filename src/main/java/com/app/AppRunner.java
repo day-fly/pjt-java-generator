@@ -1,65 +1,41 @@
-package com.app;
-
-import com.app.common.ThreadLocal;
-import com.app.service.SourceMaker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-
-@Component
-public class AppRunner implements ApplicationRunner {
-
-    @Autowired
-    SourceMaker sourceMaker;
-
-
-    @Autowired
-    DataSource dataSource;
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-
-        Map<String,String> globalMap = new HashMap<>();
-
-        globalMap.put("workName", "ProcessVariable");
-        globalMap.put("apiPrefixPath", "/rest/v2/process");
-        globalMap.put("apiGroupPath", "/variable");
-
-        ThreadLocal.set(globalMap);
-
-        System.out.println("test");
-
-
-
-//        System.out.println(globalValue.get());
-        sourceMaker.makeController();
-
-        try(Connection connection = dataSource.getConnection()){
-            System.out.println(connection);
-            String URL = connection.getMetaData().getURL();
-            System.out.println(URL);
-            String User = connection.getMetaData().getUserName();
-            System.out.println(User);
-
-            Statement statement = connection.createStatement();
-            String sql = "CREATE TABLE ACCOUNT(" +
-                    "ID INTEGER NOT NULL," +
-                    "NAME VARCHAR(255)," +
-                    "PRIMARY KEY(ID))";
-            statement.executeUpdate(sql);
-        }
-
-        jdbcTemplate.execute("INSERT INTO ACCOUNT VALUES(1, 'saelobi')");
-    }
-}
+//package com.app;
+//
+//import com.app.common.GlobalValue;
+//import com.app.service.generator.Controller;
+//import com.app.service.generator.Vo;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.boot.ApplicationArguments;
+//import org.springframework.boot.ApplicationRunner;
+//import org.springframework.jdbc.core.JdbcTemplate;
+//import org.springframework.stereotype.Component;
+//
+//import javax.sql.DataSource;
+//import java.util.HashMap;
+//import java.util.Map;
+//
+//@Component
+//@RequiredArgsConstructor
+//public class AppRunner implements ApplicationRunner {
+//    final Controller controller;
+//    final DataSource dataSource;
+//    final JdbcTemplate jdbcTemplate;
+//    final Vo vo;
+//
+//    @Override
+//    public void run(ApplicationArguments args) throws Exception {
+//
+//        Map<String,String> globalMap = new HashMap<>();
+//
+//        globalMap.put("workName", "ProcessVariable");
+//        globalMap.put("apiPrefixPath", "/rest/v2/process");
+//        globalMap.put("apiGroupPath", "/variable");
+//
+//        GlobalValue.set(globalMap);
+//
+////        System.out.println(globalValue.get());
+//        //controller.makeController();
+//        System.out.println(vo.make("account"));
+//
+//
+//    }
+//}

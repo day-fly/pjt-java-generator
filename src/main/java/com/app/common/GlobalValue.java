@@ -1,16 +1,18 @@
-package com.app.common;
-
-import java.util.Map;
-
-public class ThreadLocal {
-
-    private static java.lang.ThreadLocal<Map<String,String>> threadLocalMap = new java.lang.ThreadLocal();
-
-    public static void set(Map<String,String> map){
-        threadLocalMap.set(map);
-    }
-
-    public static String find(String key){
-        return threadLocalMap.get().get(key);
-    }
-}
+//package com.app.common;
+//
+//import com.app.dto.RequestDto;
+//
+//import java.util.Map;
+//
+//public class GlobalValue {
+//
+//    private static java.lang.ThreadLocal<RequestDto> threadLocalMap = new java.lang.ThreadLocal();
+//
+//    public static void set(RequestDto requestDto){
+//        threadLocalMap.set(requestDto);
+//    }
+//
+//    public static String find(String key){
+//        return threadLocalMap.get().get(key);
+//    }
+//}

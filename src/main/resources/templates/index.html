@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/agate.min.css">
+
+    <title>Hello, world!</title>
+</head>
+<body>
+<div class="p-3 mb-2 bg-dark text-white">
+    <h4><strong>&nbsp; Java Source Generator v0.1</strong></h4>
+</div>
+<div class="alert alert-warning">
+    <strong>1. 업무대분류 :</strong> 선택. 없을경우 '직접입력' 선택 후 업무대분류(코드)에 직접 입력합니다.<br>
+    <strong>2. 테이블명 :</strong> 실제 테이블명 입력(ex> TN_STD_CODE), DB에서 스키마 정보를 읽어오기 때문에 사전에 생성되어 있어야합니다. <br>
+    <strong>3. 파일명Prefix(영문) :</strong>
+    테이블명의 업무대분류 이후를 따라가는게 원칙입니다. => ex> TN_STD_CODE : Code, TN_COM_PROCESS_VARIABLE : ProcessVariable<br>
+    <strong>4. package path :</strong> <br>
+    <strong>5. API URL-group path :</strong> <br>
+    <strong>6. API URL-path :</strong> <br>
+</div>
+<div class="container-fluid themed-container">
+    <form class="needs-validation" novalidate action="javascript:run();">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>1.업무대분류</label>
+                <select id="workType" class="form-control form-control-sm">
+                    <option value="com">공통</option>
+                    <option value="std">기준정보</option>
+                    <option value="">예산</option>
+                    <option value="">예정가</option>
+                    <option value="">시공</option>
+                    <option value="">정산</option>
+                    <option value="direct">직접입력</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <label>업무대분류(코드)</label>
+                <input type="text" class="form-control form-control-sm" id="workTypeCode" disabled>
+            </div>
+            <div class="form-group col-md-3">
+                <label>2.테이블명</label>
+                <input type="text" class="form-control form-control-sm" id="tableName" placeholder="실제 DB에 생성한 테이블명 입력"
+                       required>
+            </div>
+
+            <!--            <div class="form-group col-md-3">-->
+            <!--            <label>2.테이블명</label>-->
+            <!--            <div class="input-group input-group-sm mb-3">-->
+            <!--                <input type="text" class="form-control form-control-sm" id="tableName" placeholder="실제 DB에 생성한 테이블명 입력" aria-describedby="basic-addon3" required>-->
+            <!--                <div class="input-group-append">-->
+            <!--                    <span class="input-group-text input-group-text" id="basic-addon3">Check</span>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            </div>-->
+
+            <div class="form-group col-md-3">
+                <label>3.파일명Prefix(영문)</label>
+                <input type="text" class="form-control form-control-sm" id="filePrefix"
+                       placeholder="생성할 파일명의 prefix(영문)" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>4.package path</label>
+                <input type="text" class="form-control form-control-sm" id="packageName" disabled placeholder=""
+                       required value="pjt.">
+            </div>
+            <div class="form-group col-md-3">
+                <label>5.API URL-group path</label>
+                <input type="text" class="form-control form-control-sm" id="apiGroupPath" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label>6.API URL-path</label>
+                <input type="text" class="form-control form-control-sm" id="apiPath" required>
+            </div>
+            <div class="form-group col-md-2">
+                <label>7.소스코드 생성</label>
+                <br>
+                <button id="runButton" type="submit" class="btn btn-primary">실행</button>
+            </div>
+        </div>
+    </form>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="nav-vo-tab" data-toggle="tab" role="tab" href="#nav-vo"
+               aria-controls="nav-vo" aria-selected="true"><strong>Vo</strong></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="nav-mapper-tab" data-toggle="tab" role="tab" href="#nav-mapper"
+               aria-controls="nav-mapper" aria-selected="false"><strong>Mapper</strong></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="nav-service-tab" data-toggle="tab" role="tab" href="#nav-service"
+               aria-controls="nav-service" aria-selected="false"><strong>Service</strong></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="nav-serviceimpl-tab" data-toggle="tab" role="tab" href="#nav-serviceimpl"
+               aria-controls="nav-serviceimpl" aria-selected="false"><strong>Service(Impl)</strong></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="nav-controller-tab" data-toggle="tab" role="tab" href="#nav-controller"
+               aria-controls="nav-controller" aria-selected="false"><strong>Controller</strong></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="nav-mapperxml-tab" data-toggle="tab" role="tab" href="#nav-mapperxml"
+               aria-controls="nav-mapperxml" aria-selected="false"><strong>Mapper(xml)</strong></a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="nav-vo" role="tabpanel" aria-labelledby="nav-vo-tab"></div>
+        <div class="tab-pane fade" id="nav-mapper" role="tabpanel" aria-labelledby="nav-mapper-tab"></div>
+        <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab"></div>
+        <div class="tab-pane fade" id="nav-serviceimpl" role="tabpanel" aria-labelledby="nav-serviceimpl-tab"></div>
+        <div class="tab-pane fade" id="nav-controller" role="tabpanel" aria-labelledby="nav-controller-tab"></div>
+        <div class="tab-pane fade" id="nav-mapperxml" role="tabpanel" aria-labelledby="nav-mapperxml-tab"></div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="jquery-3.4.1.min.js"></script>
+<script src="popper.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="highlight.min.js"></script>
+<script>
+
+    var BASE_PACKAGE = 'pjt.';
+
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+
+        //TEST
+        $('#tableName').val('account');
+        $('#filePrefix').val('Test');
+        $('#apiGroupPath').val('/group');
+        $('#apiPath').val('/work');
+    })();
+
+    $(document).ready(function () {
+        $(workType).click();
+    });
+
+    $('#workType').click(function () {
+        if (this.value == 'direct') {
+            $('#workTypeCode').val('');
+            $('#workTypeCode').prop('disabled', false);
+            $('#packageName').val(BASE_PACKAGE);
+        } else {
+            $('#workTypeCode').val(this.value);
+            $('#workTypeCode').prop('disabled', true);
+            $('#packageName').val(BASE_PACKAGE + this.value);
+        }
+    });
+
+    $('#workTypeCode').keyup(function () {
+        $('#packageName').val(BASE_PACKAGE + this.value);
+    });
+
+    function run() {
+        $.ajax({
+            url: "/generate", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+            contentType: 'application/json',
+            data: JSON.stringify({
+                workType: $('#workType').val(),
+                tableName: $('#tableName').val(),
+                filePrefix: $('#filePrefix').val(),
+                packageName: $('#packageName').val(),
+                apiGroupPath: $('#aipGroupPath').val(),
+                apiPath: $('#apiPath').val()
+            }),
+            method: "POST", // HTTP 요청 메소드(GET, POST 등)
+            dataType: "json" // 서버에서 보내줄 데이터의 타입 })
+        })
+            .done(function (json) {
+                if (json.voCode) {
+                    $('#nav-vo').html('<pre><code class="java">' + json.voCode + '</code></pre>');
+                }
+                if (json.serviceCode) {
+                    $('#nav-service').html('<pre><code class="java">' + json.serviceCode + '</code></pre>');
+                }
+                if (json.mapperCode) {
+                    $('#nav-mapper').html('<pre><code class="java">' + json.mapperCode + '</code></pre>');
+                }
+                if (json.serviceImplCode) {
+                    $('#nav-serviceimpl').html('<pre><code class="java">' + json.serviceImplCode + '</code></pre>');
+                }
+                if (json.controllerCode) {
+                    $('#nav-controller').html('<pre><code class="java">' + json.controllerCode + '</code></pre>');
+                }
+
+                $('pre code').each(function (i, block) {
+                    hljs.highlightBlock(block);
+                });
+            })
+            .fail(function (xhr, status, errorThrown) {
+
+            })
+    }
+</script>
+</body>
+</html>

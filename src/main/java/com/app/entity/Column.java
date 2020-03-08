@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Builder
 @Data
-public class ColumnInfo {
+public class Column {
     String tableName;
     String columnName;
     String dataType;
