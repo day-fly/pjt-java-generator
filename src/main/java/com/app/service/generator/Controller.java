@@ -1,5 +1,6 @@
 package com.app.service.generator;
 
+import com.app.common.ConstValue;
 import com.app.dto.RequestDto;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.lang.model.element.Modifier;
 import javax.sql.DataSource;
@@ -24,78 +22,79 @@ public class Controller {
     final DataSource dataSource;
     final JdbcTemplate jdbcTemplate;
 
-    private String workName;
-    private String apiPrefixPath;
-    private String apiGroupPath;
+    private String workType;
+    private String apiPath;
+    private String firstLowerCaseworkType;
 
     public String make(RequestDto requestDto) {
 
-        workName = requestDto.getFilePrefix();
-        apiGroupPath = requestDto.getApiGroupPath();
-        apiPrefixPath = requestDto.getApiPath();
+        workType = requestDto.getFilePrefix();
+        String apiGroupPath = requestDto.getApiGroupPath();
+        apiPath = requestDto.getApiPath();
 
-        String firstLowerCaseWorkName = workName.substring(0, 1).toLowerCase() + workName.substring(1);
-        FieldSpec serviceField = FieldSpec.builder(ClassName.bestGuess(workName + "Service"),
-                firstLowerCaseWorkName + "Service", Modifier.FINAL)
+        firstLowerCaseworkType = workType.substring(0, 1).toLowerCase() + workType.substring(1);
+        FieldSpec serviceField = FieldSpec.builder(ClassName.bestGuess(workType + ConstValue.SERVICE),
+                firstLowerCaseworkType + "Service", Modifier.FINAL)
                 .build();
-
-        //메소드 생성 - get
-        MethodSpec getMethod = MethodSpec.methodBuilder("get" + workName)
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(AnnotationSpec.builder(GetMapping.class)
-                        .addMember("value", "$S", apiGroupPath)
-                        .build()
-                )
-                .returns(ResponseEntity.class)
-                .addParameter(
-                        ParameterSpec.builder(ClassName.bestGuess(workName + "SearchVO"), firstLowerCaseWorkName + "SearchVO")
-                                .addAnnotation(RequestBody.class)
-                                .addAnnotation(Valid.class)
-                                .build()
-                )
-                //.addStatement("$T.out.println($S)", System.class, "Hello, JavaPoet!")
-                .build();
-
-        //메소드 생성 - list
-
 
         //class 생성
-        TypeSpec helloWorld = TypeSpec.classBuilder(workName + "Controller")
+        TypeSpec controller = TypeSpec.classBuilder(workType + ConstValue.CONTROLLER)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(RestController.class)
                 .addAnnotation(
                         AnnotationSpec.builder(RequestMapping.class)
-                                .addMember("value", "$S", apiPrefixPath)
+                                .addMember("value", "$S", apiGroupPath)
                                 .addMember("produces", "$S", MediaType.APPLICATION_JSON_VALUE)
                                 .build()
                 )
                 .addAnnotation(Slf4j.class)
                 .addAnnotation(RequiredArgsConstructor.class)
                 .addField(serviceField)
-                .addMethod(getMethod)
-                .addMethod(listMethod())
+                .addMethod(getMethod("list", GetMapping.class, ConstValue.METHOD_LIST_POSTFIX, ConstValue.SEARCH_VO, false))
+                .addMethod(getMethod("get", GetMapping.class, "", ConstValue.SEARCH_VO, false))
+                .addMethod(getMethod("create", PostMapping.class, "", ConstValue.VO, true))
+                .addMethod(getMethod("update", PostMapping.class, ConstValue.METHOD_UPDATE_POSTFIX, ConstValue.VO, true))
+                .addMethod(getMethod("delete", PostMapping.class, ConstValue.METHOD_DELETE_POSTFIX, ConstValue.VO, false))
                 .build();
 
         //package 생성
-        JavaFile javaFile = JavaFile.builder("com.example.helloworld", helloWorld)
+        JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ".rest", controller)
                 .build();
 
         return javaFile.toString();
     }
 
-    private MethodSpec listMethod() {
-        return MethodSpec.methodBuilder("list" + workName)
+    private MethodSpec getMethod(String name, Class mappingClass, String apiPathPostfix, String voType, boolean isValid) {
+        return MethodSpec.methodBuilder(name)
                 .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(AnnotationSpec.builder(GetMapping.class)
-                        .addMember("value", "$S", apiGroupPath + "-list")
+                .addAnnotation(AnnotationSpec.builder(mappingClass)
+                        .addMember("value", "$S", apiPath + apiPathPostfix)
                         .build()
                 )
                 .returns(ResponseEntity.class)
-                .addParameter(String[].class, "args")
+                .addParameter(ConstValue.VO.equals(voType) ?
+                        isValid ? getVoParameterSpec() : getVoParameterSpecNotIncludeValidAnnotation()
+                        : getSearchVoParameterSpec())
                 .addStatement(
-                        ""
+                        "return $T.ok(" + firstLowerCaseworkType + "Service." + name + "(" + firstLowerCaseworkType + voType + "))", ResponseEntity.class
                 )
-                //.addStatement("$T.out.println($S)", System.class, "Hello, JavaPoet!")
+                .build();
+    }
+
+    private ParameterSpec getSearchVoParameterSpec() {
+        return ParameterSpec.builder(ClassName.bestGuess(workType + ConstValue.SEARCH_VO), firstLowerCaseworkType + ConstValue.SEARCH_VO).build();
+    }
+
+    private ParameterSpec getVoParameterSpec() {
+        return ParameterSpec.builder(ClassName.bestGuess(workType + ConstValue.VO), firstLowerCaseworkType + ConstValue.VO)
+                .addAnnotation(RequestBody.class)
+                .addAnnotation(Valid.class)
+                .build();
+    }
+
+    private ParameterSpec getVoParameterSpecNotIncludeValidAnnotation() {
+        return ParameterSpec.builder(ClassName.bestGuess(workType + ConstValue.VO), firstLowerCaseworkType + ConstValue.VO)
+                .addAnnotation(RequestBody.class)
                 .build();
     }
 }

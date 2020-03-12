@@ -36,7 +36,7 @@ public class MainController {
         return ResponseEntity.ok(ResponseDto.builder()
                 .voCode(this.vo.make(requestDto))
                 .controllerCode(this.controller.make(requestDto))
-                .serviceCode(null)
+                .serviceCode(this.service.make(requestDto))
                 .serviceImplCode(null)
                 .mapperCode(null)
                 .build());
