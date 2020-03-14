@@ -66,7 +66,7 @@ public class Controller {
         return MethodSpec.methodBuilder(name)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(AnnotationSpec.builder(ApiOperation.class)
-                        .addMember("value", "$S", requestDto.getWorkName() + AppUtil.getKorean(name))
+                        .addMember("value", "$S", requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                         .addMember("notes", "$S", "")
                         .build()
                 )

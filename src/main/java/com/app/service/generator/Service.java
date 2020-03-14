@@ -2,6 +2,7 @@ package com.app.service.generator;
 
 import com.app.common.ConstValue;
 import com.app.dto.RequestDto;
+import com.app.util.AppUtil;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,8 +23,6 @@ public class Service {
     public String make(RequestDto _requestDto) {
         requestDto = _requestDto;
 
-
-
         //class 생성
         TypeSpec service = TypeSpec.interfaceBuilder(requestDto.getFilePrefix() + ConstValue.SERVICE)
                 .addModifiers(Modifier.PUBLIC)
@@ -43,7 +42,7 @@ public class Service {
 
     private MethodSpec getMethod(String name, ParameterizedTypeName parameterizedTypeName, String voType) {
         return MethodSpec.methodBuilder(name)
-                .addJavadoc("test")
+                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(parameterizedTypeName)
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
@@ -52,6 +51,7 @@ public class Service {
 
     private MethodSpec getMethod(String name, Class clazz, String voType) {
         return MethodSpec.methodBuilder(name)
+                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(clazz)
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
@@ -60,6 +60,7 @@ public class Service {
 
     private MethodSpec getMethod(String name, ClassName className, String voType) {
         return MethodSpec.methodBuilder(name)
+                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(className)
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
