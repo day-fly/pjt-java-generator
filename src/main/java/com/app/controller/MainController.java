@@ -42,7 +42,7 @@ public class MainController {
                 .controllerCode(replaceBraket(this.controller.make(requestDto)))
                 .serviceCode(replaceBraket(this.service.make(requestDto)))
                 .serviceImplCode(null)
-                .mapperCode(null)
+                .mapperCode(this.mapper.make(requestDto))
                 .build());
     }
 

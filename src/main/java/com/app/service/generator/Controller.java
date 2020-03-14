@@ -36,7 +36,7 @@ public class Controller {
                 .build();
 
         //class 생성
-        TypeSpec controller = TypeSpec.classBuilder(requestDto.getWorkType() + ConstValue.CONTROLLER)
+        TypeSpec controller = TypeSpec.classBuilder(requestDto.getFilePrefix() + ConstValue.CONTROLLER)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(RestController.class)
                 .addAnnotation(
@@ -67,7 +67,7 @@ public class Controller {
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(AnnotationSpec.builder(ApiOperation.class)
                         .addMember("value", "$S", requestDto.getWorkName() + " " + AppUtil.getKorean(name))
-                        .addMember("notes", "$S", "")
+                        .addMember("notes", "$S", "해당 method에 대한 설명을 적어주세요.")
                         .build()
                 )
                 .addAnnotation(AnnotationSpec.builder(mappingClass)
