@@ -10,7 +10,9 @@ public class ConstValue {
     public static String VO = "VO";
     public static String CONTROLLER = "Controller";
     public static String SERVICE = "Service";
+    public static String SERVICE_IMPL = "ServiceImpl";
     public static String MAPPER = "Mapper";
+
 
     public static String CONTROLLER_PACKAGE = ".rest";
     public static String SERVICE_PACKAGE = ".app";

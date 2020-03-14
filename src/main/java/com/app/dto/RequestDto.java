@@ -23,6 +23,9 @@ public class RequestDto {
 
     private ClassName voClassName;
     private ClassName searchVoClassName;
+    private ClassName mapperClassName;
+    private ClassName serviceClassName;
+    private ClassName controllerClassName;
 
     private String workName; //업무명(한글)
 
@@ -36,5 +39,8 @@ public class RequestDto {
     public void setClassNames() {
         voClassName = ClassName.get(this.packageName + ConstValue.VO_PACKAGE, this.filePrefix + ConstValue.VO);
         searchVoClassName = ClassName.get(this.packageName + ConstValue.VO_PACKAGE, this.filePrefix + ConstValue.SEARCH_VO);
+        mapperClassName = ClassName.get(this.packageName + ConstValue.MAPPER_PACKAGE, this.filePrefix + ConstValue.MAPPER);
+        serviceClassName = ClassName.get(this.packageName + ConstValue.SERVICE_PACKAGE, this.filePrefix + ConstValue.SERVICE);
+        controllerClassName = ClassName.get(this.packageName + ConstValue.CONTROLLER_PACKAGE, this.filePrefix + ConstValue.CONTROLLER);
     }
 }

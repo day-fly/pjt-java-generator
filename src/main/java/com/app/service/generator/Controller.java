@@ -9,20 +9,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.lang.model.element.Modifier;
-import javax.sql.DataSource;
 import javax.validation.Valid;
 
 @Service
 @RequiredArgsConstructor
 public class Controller {
-
-    final DataSource dataSource;
-    final JdbcTemplate jdbcTemplate;
 
     private RequestDto requestDto;
 
@@ -31,7 +26,7 @@ public class Controller {
         if(_requestDto == null) return "";
 
         requestDto = _requestDto;
-        FieldSpec serviceField = FieldSpec.builder(ClassName.get(requestDto.getPackageName() + ConstValue.CONTROLLER_PACKAGE, requestDto.getFilePrefix() + ConstValue.SERVICE),
+        FieldSpec serviceField = FieldSpec.builder(requestDto.getControllerClassName(),
                 requestDto.getFirstLowerCaseFilePrefix() + ConstValue.SERVICE, Modifier.FINAL)
                 .build();
 

@@ -6,19 +6,13 @@ import com.app.util.AppUtil;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.lang.model.element.Modifier;
-import javax.sql.DataSource;
 import java.util.List;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class Mapper {
-
-    final DataSource dataSource;
-    final JdbcTemplate jdbcTemplate;
 
     private RequestDto requestDto;
 

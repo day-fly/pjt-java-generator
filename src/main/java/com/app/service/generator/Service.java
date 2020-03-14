@@ -5,18 +5,13 @@ import com.app.dto.RequestDto;
 import com.app.util.AppUtil;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.lang.model.element.Modifier;
-import javax.sql.DataSource;
 import java.util.List;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class Service {
-
-    final DataSource dataSource;
-    final JdbcTemplate jdbcTemplate;
 
     private RequestDto requestDto;
 
