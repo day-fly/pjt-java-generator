@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 
@@ -33,12 +34,20 @@ public class MainController {
 
     @PostMapping("/generate")
     public ResponseEntity<ResponseDto> generate(@RequestBody RequestDto requestDto) throws IOException {
+
+        requestDto.setClassNames();
+
         return ResponseEntity.ok(ResponseDto.builder()
-                .voCode(this.vo.make(requestDto))
-                .controllerCode(this.controller.make(requestDto))
-                .serviceCode(this.service.make(requestDto))
+                .voCode(replaceBraket(this.vo.make(requestDto)))
+                .controllerCode(replaceBraket(this.controller.make(requestDto)))
+                .serviceCode(replaceBraket(this.service.make(requestDto)))
                 .serviceImplCode(null)
                 .mapperCode(null)
                 .build());
+    }
+
+    private String replaceBraket(String fromString) {
+        if (StringUtils.isEmpty(fromString)) return "";
+        return fromString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     }
 }

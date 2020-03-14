@@ -2,7 +2,9 @@ package com.app.service.generator;
 
 import com.app.common.ConstValue;
 import com.app.dto.RequestDto;
+import com.app.util.AppUtil;
 import com.squareup.javapoet.*;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -22,28 +24,24 @@ public class Controller {
     final DataSource dataSource;
     final JdbcTemplate jdbcTemplate;
 
-    private String workType;
-    private String apiPath;
-    private String firstLowerCaseworkType;
+    private RequestDto requestDto;
 
-    public String make(RequestDto requestDto) {
+    public String make(RequestDto _requestDto) {
 
-        workType = requestDto.getFilePrefix();
-        String apiGroupPath = requestDto.getApiGroupPath();
-        apiPath = requestDto.getApiPath();
+        if(_requestDto == null) return "";
 
-        firstLowerCaseworkType = workType.substring(0, 1).toLowerCase() + workType.substring(1);
-        FieldSpec serviceField = FieldSpec.builder(ClassName.bestGuess(workType + ConstValue.SERVICE),
-                firstLowerCaseworkType + "Service", Modifier.FINAL)
+        requestDto = _requestDto;
+        FieldSpec serviceField = FieldSpec.builder(ClassName.get(requestDto.getPackageName() + ConstValue.CONTROLLER_PACKAGE, requestDto.getFilePrefix() + ConstValue.SERVICE),
+                requestDto.getFirstLowerCaseFilePrefix() + ConstValue.SERVICE, Modifier.FINAL)
                 .build();
 
         //class 생성
-        TypeSpec controller = TypeSpec.classBuilder(workType + ConstValue.CONTROLLER)
+        TypeSpec controller = TypeSpec.classBuilder(requestDto.getWorkType() + ConstValue.CONTROLLER)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(RestController.class)
                 .addAnnotation(
                         AnnotationSpec.builder(RequestMapping.class)
-                                .addMember("value", "$S", apiGroupPath)
+                                .addMember("value", "$S", requestDto.getApiGroupPath())
                                 .addMember("produces", "$S", MediaType.APPLICATION_JSON_VALUE)
                                 .build()
                 )
@@ -67,8 +65,13 @@ public class Controller {
     private MethodSpec getMethod(String name, Class mappingClass, String apiPathPostfix, String voType, boolean isValid) {
         return MethodSpec.methodBuilder(name)
                 .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(AnnotationSpec.builder(ApiOperation.class)
+                        .addMember("value", "$S", requestDto.getWorkName() + AppUtil.getKorean(name))
+                        .addMember("notes", "$S", "")
+                        .build()
+                )
                 .addAnnotation(AnnotationSpec.builder(mappingClass)
-                        .addMember("value", "$S", apiPath + apiPathPostfix)
+                        .addMember("value", "$S", requestDto.getApiPath() + apiPathPostfix)
                         .build()
                 )
                 .returns(ResponseEntity.class)
@@ -76,24 +79,25 @@ public class Controller {
                         isValid ? getVoParameterSpec() : getVoParameterSpecNotIncludeValidAnnotation()
                         : getSearchVoParameterSpec())
                 .addStatement(
-                        "return $T.ok(" + firstLowerCaseworkType + "Service." + name + "(" + firstLowerCaseworkType + voType + "))", ResponseEntity.class
+                        "return $T.ok(" + requestDto.getFirstLowerCaseFilePrefix() + "Service." + name + "(" + requestDto.getFirstLowerCaseFilePrefix() + voType + "))", ResponseEntity.class
                 )
                 .build();
     }
 
     private ParameterSpec getSearchVoParameterSpec() {
-        return ParameterSpec.builder(ClassName.bestGuess(workType + ConstValue.SEARCH_VO), firstLowerCaseworkType + ConstValue.SEARCH_VO).build();
+        return ParameterSpec.builder(requestDto.getSearchVoClassName(), requestDto.getFirstLowerCaseFilePrefix() + ConstValue.SEARCH_VO).build();
     }
 
     private ParameterSpec getVoParameterSpec() {
-        return ParameterSpec.builder(ClassName.bestGuess(workType + ConstValue.VO), firstLowerCaseworkType + ConstValue.VO)
+        return ParameterSpec.builder(requestDto.getVoClassName(), requestDto.getFirstLowerCaseFilePrefix() + ConstValue.VO)
                 .addAnnotation(RequestBody.class)
                 .addAnnotation(Valid.class)
                 .build();
     }
 
+    //@RequestBody @Valid prameter
     private ParameterSpec getVoParameterSpecNotIncludeValidAnnotation() {
-        return ParameterSpec.builder(ClassName.bestGuess(workType + ConstValue.VO), firstLowerCaseworkType + ConstValue.VO)
+        return ParameterSpec.builder(requestDto.getVoClassName(), requestDto.getFirstLowerCaseFilePrefix() + ConstValue.VO)
                 .addAnnotation(RequestBody.class)
                 .build();
     }

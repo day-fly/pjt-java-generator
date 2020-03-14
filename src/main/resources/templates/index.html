@@ -46,23 +46,12 @@
                 <label>업무대분류(코드)</label>
                 <input type="text" class="form-control form-control-sm" id="workTypeCode" disabled>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>2.테이블명</label>
                 <input type="text" class="form-control form-control-sm" id="tableName" placeholder="실제 DB에 생성한 테이블명 입력"
                        required>
             </div>
-
-            <!--            <div class="form-group col-md-3">-->
-            <!--            <label>2.테이블명</label>-->
-            <!--            <div class="input-group input-group-sm mb-3">-->
-            <!--                <input type="text" class="form-control form-control-sm" id="tableName" placeholder="실제 DB에 생성한 테이블명 입력" aria-describedby="basic-addon3" required>-->
-            <!--                <div class="input-group-append">-->
-            <!--                    <span class="input-group-text input-group-text" id="basic-addon3">Check</span>-->
-            <!--                </div>-->
-            <!--            </div>-->
-            <!--            </div>-->
-
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>3.파일명Prefix(영문)</label>
                 <input type="text" class="form-control form-control-sm" id="filePrefix"
                        placeholder="생성할 파일명의 prefix(영문)" required>
@@ -86,6 +75,12 @@
                 <label>7.소스코드 생성</label>
                 <br>
                 <button id="runButton" type="submit" class="btn btn-primary">실행</button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>업무명(한글)</label>
+                <input type="text" class="form-control form-control-sm" id="workName" required>
             </div>
         </div>
     </form>
@@ -124,6 +119,8 @@
         <div class="tab-pane fade" id="nav-controller" role="tabpanel" aria-labelledby="nav-controller-tab"></div>
         <div class="tab-pane fade" id="nav-mapperxml" role="tabpanel" aria-labelledby="nav-mapperxml-tab"></div>
     </div>
+
+
 </div>
 
 <!-- Optional JavaScript -->
@@ -188,7 +185,8 @@
                 filePrefix: $('#filePrefix').val(),
                 packageName: $('#packageName').val(),
                 apiGroupPath: $('#apiGroupPath').val(),
-                apiPath: $('#apiPath').val()
+                apiPath: $('#apiPath').val(),
+                workName : $('#workName').val()
             }),
             method: "POST", // HTTP 요청 메소드(GET, POST 등)
             dataType: "json" // 서버에서 보내줄 데이터의 타입 })
