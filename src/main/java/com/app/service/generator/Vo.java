@@ -1,5 +1,6 @@
 package com.app.service.generator;
 
+import com.app.common.ConstValue;
 import com.app.dto.RequestDto;
 import com.app.entity.Column;
 import com.app.service.schema.SchemaService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.lang.model.element.Modifier;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,11 @@ public class Vo {
                 .addAnnotation(NoArgsConstructor.class)
                 .addAnnotation(AllArgsConstructor.class)
                 .addFields(fieldSpecList)
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.VO + ".java" + "\n\n"
+                        + "@author " + requestDto.getAuthor() + "\n"
+                        + "@history" + "\n"
+                        + " - " + LocalDate.now() + " : 최초 생성"
+                )
                 .build();
 
         JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ".entity", VoClass)

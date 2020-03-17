@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.lang.model.element.Modifier;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -36,10 +37,15 @@ public class ServiceImpl {
                 .addMethod(getMethod("create", ConstValue.VO, int.class))
                 .addMethod(getMethod("update", ConstValue.VO, int.class))
                 .addMethod(getMethod("delete", ConstValue.VO, int.class))
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.SERVICE_IMPL + ".java" + "\n\n"
+                        + "@author " + requestDto.getAuthor() + "\n"
+                        + "@history" + "\n"
+                        + " - " + LocalDate.now() + " : 최초 생성"
+                )
                 .build();
 
         //package 생성
-        JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ".rest", controller)
+        JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ConstValue.SERVICE_PACKAGE, controller)
                 .build();
 
         return javaFile.toString();

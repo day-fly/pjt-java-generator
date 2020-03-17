@@ -13,4 +13,5 @@ public class Column {
     String udtName;
     Integer characterMaximumLength;
     String isNullable;
+    String isPk;
 }

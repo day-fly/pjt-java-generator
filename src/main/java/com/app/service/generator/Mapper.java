@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
 
 import javax.lang.model.element.Modifier;
+import java.time.LocalDate;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -28,6 +29,11 @@ public class Mapper {
                 .addMethod(getMethod("create", int.class, ConstValue.VO))
                 .addMethod(getMethod("update", int.class, ConstValue.VO))
                 .addMethod(getMethod("delete", int.class, ConstValue.VO))
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.MAPPER + ".java" + "\n\n"
+                        + "@author " + requestDto.getAuthor() + "\n"
+                        + "@history" + "\n"
+                        + " - " + LocalDate.now() + " : 최초 생성"
+                )
                 .build();
 
         //package 생성

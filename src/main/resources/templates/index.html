@@ -57,36 +57,35 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
                 <label>4.package path</label>
                 <input type="text" class="form-control form-control-sm" id="packageName" disabled placeholder=""
                        required value="com.sds.portal">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>5.API URL-group path</label>
                 <input type="text" class="form-control form-control-sm" id="apiGroupPath" required>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>6.API URL-path</label>
                 <input type="text" class="form-control form-control-sm" id="apiPath" required>
             </div>
             <div class="form-group col-md-2">
-                <label>7.소스코드 생성</label>
-                <br>
-                <button id="runButton" type="submit" class="btn btn-primary">실행</button>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                <label>주석-업무명(한글)</label>
+                <label>7.주석-업무명(한글)</label>
                 <input type="text" class="form-control form-control-sm" id="workName" required>
             </div>
             <div class="form-group col-md-2">
-                <label>주석-작성자(knox Id)</label>
+                <label>8.주석-작성자(knox Id)</label>
                 <input type="text" class="form-control form-control-sm" id="author" required>
             </div>
         </div>
+
+            <button id="runButton" type="submit" class="btn btn-primary">실행</button>
+            <button id="exportButton" type="submit" class="btn btn-primary">Export</button>
+
     </form>
+
+    <br>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">

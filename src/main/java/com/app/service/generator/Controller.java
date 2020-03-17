@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.lang.model.element.Modifier;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +49,11 @@ public class Controller {
                 .addMethod(getMethod("create", PostMapping.class, "", ConstValue.VO, true))
                 .addMethod(getMethod("update", PostMapping.class, ConstValue.METHOD_UPDATE_POSTFIX, ConstValue.VO, true))
                 .addMethod(getMethod("delete", PostMapping.class, ConstValue.METHOD_DELETE_POSTFIX, ConstValue.VO, false))
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.CONTROLLER + ".java" + "\n\n"
+                        + "@author " + requestDto.getAuthor() + "\n"
+                        + "@history" + "\n"
+                        + " - " + LocalDate.now() + " : 최초 생성"
+                )
                 .build();
 
         //package 생성
