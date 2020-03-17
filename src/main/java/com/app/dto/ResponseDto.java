@@ -13,5 +13,6 @@ public class ResponseDto {
     private String serviceCode;
     private String serviceImplCode;
     private String mapperCode;
+    private String mapperXmlCode;
     private String controllerCode;
 }

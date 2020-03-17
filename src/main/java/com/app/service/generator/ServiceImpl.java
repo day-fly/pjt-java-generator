@@ -45,6 +45,13 @@ public class ServiceImpl {
         return javaFile.toString();
     }
 
+    /**
+     *
+     * @param name
+     * @param voType
+     * @param returnType
+     * @return
+     */
     private MethodSpec getMethod(String name, String voType, Object returnType) {
         return MethodSpec.methodBuilder(name)
                 .addModifiers(Modifier.PUBLIC)

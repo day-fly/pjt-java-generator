@@ -2,10 +2,7 @@ package com.app.controller;
 
 import com.app.dto.RequestDto;
 import com.app.dto.ResponseDto;
-import com.app.service.generator.Mapper;
-import com.app.service.generator.Service;
-import com.app.service.generator.ServiceImpl;
-import com.app.service.generator.Vo;
+import com.app.service.generator.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +20,7 @@ public class MainController {
     final Vo vo;
     final Service service;
     final ServiceImpl serviceImpl;
+    final MapperXML mapperXML;
 
     @GetMapping("/")
     public String get() {
@@ -40,6 +38,7 @@ public class MainController {
                 .serviceCode(replaceBraket(this.service.make(requestDto)))
                 .serviceImplCode(replaceBraket(this.serviceImpl.make(requestDto)))
                 .mapperCode(replaceBraket(this.mapper.make(requestDto)))
+                .mapperXmlCode(replaceBraket(this.mapperXML.make(requestDto)))
                 .build());
     }
 

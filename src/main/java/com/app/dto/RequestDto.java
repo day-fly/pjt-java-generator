@@ -28,6 +28,7 @@ public class RequestDto {
     private ClassName controllerClassName;
 
     private String workName; //업무명(한글)
+    private String author;
 
     public String getFirstLowerCaseFilePrefix() {
         if (StringUtils.isEmpty(this.filePrefix)) {

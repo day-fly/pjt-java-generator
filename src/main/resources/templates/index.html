@@ -20,10 +20,9 @@
     <strong>1. 업무대분류 :</strong> 선택. 없을경우 '직접입력' 선택 후 업무대분류(코드)에 직접 입력합니다.<br>
     <strong>2. 테이블명 :</strong> 실제 테이블명 입력(ex> TN_STD_CODE), DB에서 스키마 정보를 읽어오기 때문에 사전에 생성되어 있어야합니다. <br>
     <strong>3. 파일명Prefix(영문) :</strong>
-    테이블명의 업무대분류 이후를 따라가는게 원칙입니다. => ex> TN_STD_CODE : Code, TN_COM_PROCESS_VARIABLE : ProcessVariable<br>
-    <strong>4. package path :</strong> <br>
-    <strong>5. API URL-group path :</strong> <br>
-    <strong>6. API URL-path :</strong> <br>
+    테이블명을 따르는 것이 기본 원칙. => ex> TN_STD_CODE : Code, TN_COM_PROCESS_VARIABLE : ProcessVariable<br>
+    <strong>4. package path : 자동세팅</strong> <br>
+    <strong>5. API URL-group path, 6. API URL-path</strong> <br>
 </div>
 <div class="container-fluid themed-container">
     <form class="needs-validation" novalidate action="javascript:run();">
@@ -79,8 +78,12 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-2">
-                <label>업무명(한글)</label>
+                <label>주석-업무명(한글)</label>
                 <input type="text" class="form-control form-control-sm" id="workName" required>
+            </div>
+            <div class="form-group col-md-2">
+                <label>주석-작성자(knox Id)</label>
+                <input type="text" class="form-control form-control-sm" id="author" required>
             </div>
         </div>
     </form>
@@ -186,7 +189,8 @@
                 packageName: $('#packageName').val(),
                 apiGroupPath: $('#apiGroupPath').val(),
                 apiPath: $('#apiPath').val(),
-                workName : $('#workName').val()
+                workName : $('#workName').val(),
+                author : $('#author').val()
             }),
             method: "POST", // HTTP 요청 메소드(GET, POST 등)
             dataType: "json" // 서버에서 보내줄 데이터의 타입 })
@@ -200,6 +204,9 @@
                 }
                 if (json.mapperCode) {
                     $('#nav-mapper').html('<pre><code class="java">' + json.mapperCode + '</code></pre>');
+                }
+                if (json.mapperXmlCode) {
+                    $('#nav-mapperxml').html('<pre><code class="java">' + json.mapperXmlCode + '</code></pre>');
                 }
                 if (json.serviceImplCode) {
                     $('#nav-serviceimpl').html('<pre><code class="java">' + json.serviceImplCode + '</code></pre>');

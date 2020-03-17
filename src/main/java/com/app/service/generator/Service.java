@@ -7,6 +7,9 @@ import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 
 import javax.lang.model.element.Modifier;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -26,6 +29,11 @@ public class Service {
                 .addMethod(getMethod("create", int.class, ConstValue.VO))
                 .addMethod(getMethod("update", int.class, ConstValue.VO))
                 .addMethod(getMethod("delete", int.class, ConstValue.VO))
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.SERVICE + ".java" + "\n\n"
+                    + "@author " + requestDto.getAuthor() + "\n"
+                    + "@history" + "\n"
+                    + " - " + LocalDate.now() + " : 최초 생성"
+                )
                 .build();
 
         //package 생성
@@ -35,29 +43,21 @@ public class Service {
         return javaFile.toString();
     }
 
-    private MethodSpec getMethod(String name, ParameterizedTypeName parameterizedTypeName, String voType) {
+    private MethodSpec getMethod(String name, Object returnType, String voType) {
+        //파라미터명
+        String param = requestDto.getFirstLowerCaseFilePrefix() + voType;
+        //파라미터 설명
+        String paramDesc = ConstValue.VO.equals(voType) ? requestDto.getWorkName() + " " + AppUtil.getKorean(name) + " Object" : "검색조건 Object";
         return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
+                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name) + "\n"
+                        + "@param " + param + " : " + paramDesc + "\n"
+                        + "@return " + returnType.toString())
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(parameterizedTypeName)
-                .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
-                .build();
-    }
-
-    private MethodSpec getMethod(String name, Class clazz, String voType) {
-        return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
-                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(clazz)
-                .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
-                .build();
-    }
-
-    private MethodSpec getMethod(String name, ClassName className, String voType) {
-        return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
-                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(className)
+                .returns(
+                        returnType instanceof ParameterizedTypeName ? (ParameterizedTypeName) returnType
+                                : returnType instanceof ClassName ? (ClassName) returnType
+                                : TypeName.get((Type) returnType)
+                )
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
                 .build();
     }

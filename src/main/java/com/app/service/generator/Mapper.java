@@ -39,7 +39,7 @@ public class Mapper {
 
     private MethodSpec getMethod(String name, ParameterizedTypeName parameterizedTypeName, String voType) {
         return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.MAPPER + "." + name + " : " + requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(parameterizedTypeName)
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
@@ -48,7 +48,7 @@ public class Mapper {
 
     private MethodSpec getMethod(String name, Class clazz, String voType) {
         return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.MAPPER + "." + name + " : " + requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(clazz)
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
@@ -57,7 +57,7 @@ public class Mapper {
 
     private MethodSpec getMethod(String name, ClassName className, String voType) {
         return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getWorkName() + " " + AppUtil.getKorean(name))
+                .addJavadoc(requestDto.getFilePrefix() + ConstValue.MAPPER + "." + name + " : " + requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(className)
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
