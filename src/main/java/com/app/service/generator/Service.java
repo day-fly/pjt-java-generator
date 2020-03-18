@@ -18,7 +18,7 @@ public class Service {
 
     private RequestDto requestDto;
 
-    public String make(RequestDto _requestDto) {
+    public JavaFile make(RequestDto _requestDto) {
         requestDto = _requestDto;
 
         //class 생성
@@ -40,7 +40,7 @@ public class Service {
         JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ConstValue.SERVICE_PACKAGE, service)
                 .build();
 
-        return javaFile.toString();
+        return javaFile;
     }
 
     private MethodSpec getMethod(String name, Object returnType, String voType) {

@@ -16,9 +16,9 @@ public class ServiceImpl {
 
     private RequestDto requestDto;
 
-    public String make(RequestDto _requestDto) {
+    public JavaFile make(RequestDto _requestDto) {
 
-        if (_requestDto == null) return "";
+        if (_requestDto == null) return null;
 
         requestDto = _requestDto;
         FieldSpec mapperField = FieldSpec.builder(requestDto.getMapperClassName(),
@@ -48,7 +48,7 @@ public class ServiceImpl {
         JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ConstValue.SERVICE_PACKAGE, controller)
                 .build();
 
-        return javaFile.toString();
+        return javaFile;
     }
 
     /**

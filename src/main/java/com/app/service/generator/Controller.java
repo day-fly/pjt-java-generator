@@ -22,9 +22,9 @@ public class Controller {
 
     private RequestDto requestDto;
 
-    public String make(RequestDto _requestDto) {
+    public JavaFile make(RequestDto _requestDto) {
 
-        if(_requestDto == null) return "";
+        if(_requestDto == null) return null;
 
         requestDto = _requestDto;
         FieldSpec serviceField = FieldSpec.builder(requestDto.getControllerClassName(),
@@ -60,7 +60,7 @@ public class Controller {
         JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ".rest", controller)
                 .build();
 
-        return javaFile.toString();
+        return javaFile;
     }
 
     private MethodSpec getMethod(String name, Class mappingClass, String apiPathPostfix, String voType, boolean isValid) {

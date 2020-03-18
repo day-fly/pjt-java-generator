@@ -15,6 +15,7 @@ import org.thymeleaf.util.StringUtils;
 public class RequestDto {
 
     private String workType;
+    private String workSubType;
     private String tableName;
     private String filePrefix;
     private String packageName;

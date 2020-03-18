@@ -17,7 +17,7 @@ public class Mapper {
 
     private RequestDto requestDto;
 
-    public String make(RequestDto _requestDto) {
+    public JavaFile make(RequestDto _requestDto) {
         requestDto = _requestDto;
 
         //class 생성
@@ -40,7 +40,7 @@ public class Mapper {
         JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ConstValue.MAPPER_PACKAGE, mapper)
                 .build();
 
-        return javaFile.toString();
+        return javaFile;
     }
 
     private MethodSpec getMethod(String name, ParameterizedTypeName parameterizedTypeName, String voType) {

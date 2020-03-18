@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class Vo {
+public class SearchVo {
     final SchemaService schemaService;
 
     public JavaFile make(RequestDto requestDto) {

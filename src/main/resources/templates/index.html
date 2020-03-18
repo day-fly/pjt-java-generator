@@ -16,19 +16,19 @@
 <div class="p-3 mb-2 bg-dark text-white">
     <h4><strong>통합공사관리 pjt - Java Source Generator v0.1</strong></h4>
 </div>
-<div class="alert alert-warning">
-    <strong>1. 업무대분류 :</strong> 선택. 없을경우 '직접입력' 선택 후 업무대분류(코드)에 직접 입력합니다.<br>
-    <strong>2. 테이블명 :</strong> 실제 테이블명 입력(ex> TN_STD_CODE), DB에서 스키마 정보를 읽어오기 때문에 사전에 생성되어 있어야합니다. <br>
-    <strong>3. 파일명Prefix(영문) :</strong>
-    테이블명을 따르는 것이 기본 원칙. => ex> TN_STD_CODE : Code, TN_COM_PROCESS_VARIABLE : ProcessVariable<br>
-    <strong>4. package path : 자동세팅</strong> <br>
-    <strong>5. API URL-group path, 6. API URL-path</strong> <br>
-</div>
+<!--<div class="alert alert-warning">-->
+<!--    <strong>1. 업무대분류 :</strong> 선택. 없을경우 '직접입력' 선택 후 업무대분류(코드)에 직접 입력합니다.<br>-->
+<!--    <strong>2. 테이블명 :</strong> 실제 테이블명 입력(ex> TN_STD_CODE), DB에서 스키마 정보를 읽어오기 때문에 사전에 생성되어 있어야합니다. <br>-->
+<!--    <strong>3. 파일명Prefix(영문) :</strong>-->
+<!--    테이블명을 따르는 것이 기본 원칙. => ex> TN_STD_CODE : Code, TN_COM_PROCESS_VARIABLE : ProcessVariable<br>-->
+<!--    <strong>4. package path : 자동세팅</strong> <br>-->
+<!--    <strong>5. API URL-group path, 6. API URL-path</strong> <br>-->
+<!--</div>-->
 <div class="container-fluid themed-container">
     <form class="needs-validation" novalidate action="javascript:run();">
         <div class="form-row">
-            <div class="form-group col-md-2">
-                <label>1.업무대분류</label>
+            <div class="form-group col-md-1.5">
+                <label class="text-success">Type</label>
                 <select id="workType" class="form-control form-control-sm">
                     <option value="standard">기준정보</option>
                     <option value="">예산</option>
@@ -41,47 +41,51 @@
                     <option value="direct">직접입력</option>
                 </select>
             </div>
-            <div class="form-group col-md-2">
-                <label>업무대분류(코드)</label>
+            <div class="form-group col-md-1.2">
+                <label>Type(code)</label>
                 <input type="text" class="form-control form-control-sm" id="workTypeCode" disabled>
             </div>
+            <div class="form-group col-md-1.5">
+                <label>Sub Type</label>
+                <input type="text" class="form-control form-control-sm" id="workSubType" placeholder="ex> stdContract">
+            </div>
             <div class="form-group col-md-2">
-                <label>2.테이블명</label>
-                <input type="text" class="form-control form-control-sm" id="tableName" placeholder="실제 DB에 생성한 테이블명 입력"
+                <label>Table Name</label>
+                <input type="text" class="form-control form-control-sm" id="tableName" placeholder="DB 테이블명"
                        required>
             </div>
             <div class="form-group col-md-2">
-                <label>3.파일명Prefix(영문)</label>
+                <label>File Name(prefix)</label>
                 <input type="text" class="form-control form-control-sm" id="filePrefix"
                        placeholder="생성할 파일명의 prefix(영문)" required>
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-2">
-                <label>4.package path</label>
+            <div class="form-group col-md-3">
+                <label>Package path</label>
                 <input type="text" class="form-control form-control-sm" id="packageName" disabled placeholder=""
                        required value="com.sds.portal">
             </div>
             <div class="form-group col-md-2">
-                <label>5.API URL-group path</label>
+                <label>URL-group path</label>
                 <input type="text" class="form-control form-control-sm" id="apiGroupPath" required>
             </div>
             <div class="form-group col-md-2">
-                <label>6.API URL-path</label>
+                <label>URL-path</label>
                 <input type="text" class="form-control form-control-sm" id="apiPath" required>
             </div>
             <div class="form-group col-md-2">
-                <label>7.주석-업무명(한글)</label>
+                <label>주석-업무명(한글)</label>
                 <input type="text" class="form-control form-control-sm" id="workName" required>
             </div>
             <div class="form-group col-md-2">
-                <label>8.주석-작성자(knox Id)</label>
+                <label>주석-작성자(knox Id)</label>
                 <input type="text" class="form-control form-control-sm" id="author" required>
             </div>
         </div>
 
             <button id="runButton" type="submit" class="btn btn-primary">실행</button>
-            <button id="exportButton" type="submit" class="btn btn-primary">Export</button>
+            <button id="exportButton" type="button" class="btn btn-primary">Export</button>
 
     </form>
 
@@ -177,12 +181,22 @@
         $('#packageName').val(BASE_PACKAGE + this.value);
     });
 
+    $('#workSubType').keyup(function(){
+        $('#packageName').val(BASE_PACKAGE + $('#workTypeCode').val() + '.' + this.value);
+    });
+
+    $('#exportButton').click(function(){
+        alert('test');
+        exportFile();
+    });
+
     function run() {
         $.ajax({
             url: "/generate", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
             contentType: 'application/json',
             data: JSON.stringify({
                 workType: $('#workType').val(),
+                workSubType : $('#workSubType').val(),
                 tableName: $('#tableName').val(),
                 filePrefix: $('#filePrefix').val(),
                 packageName: $('#packageName').val(),
@@ -220,6 +234,32 @@
             })
             .fail(function (xhr, status, errorThrown) {
 
+            })
+    }
+
+    function exportFile() {
+        $.ajax({
+            url: "/export", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+            contentType: 'application/json',
+            data: JSON.stringify({
+                workType: $('#workType').val(),
+                tableName: $('#tableName').val(),
+                filePrefix: $('#filePrefix').val(),
+                packageName: $('#packageName').val(),
+                apiGroupPath: $('#apiGroupPath').val(),
+                apiPath: $('#apiPath').val(),
+                workName: $('#workName').val(),
+                author: $('#author').val()
+            }),
+            method: "POST", // HTTP 요청 메소드(GET, POST 등)
+            dataType: "json" // 서버에서 보내줄 데이터의 타입 })
+        })
+            .done(function (json) {
+               alert(json);
+            })
+            .fail(function (xhr, status, errorThrown) {
+                console.log(xhr);
+                console.log(status);
             })
     }
 </script>
