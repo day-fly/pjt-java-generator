@@ -25,69 +25,12 @@
 <!--    <strong>5. API URL-group path, 6. API URL-path</strong> <br>-->
 <!--</div>-->
 <div class="container-fluid themed-container">
-    <form class="needs-validation" novalidate action="javascript:run();">
-        <div class="form-row">
-            <div class="form-group col-md-1.5">
-                <label class="text-success">Type</label>
-                <select id="workType" class="form-control form-control-sm">
-                    <option value="standard">기준정보</option>
-                    <option value="">예산</option>
-                    <option value="">예정가</option>
-                    <option value="contract">계약</option>
-                    <option value="work">시공</option>
-                    <option value="invoice">정산</option>
-                    <option value="common">공통</option>
-                    <option value="admin">공통(ADMIN)</option>
-                    <option value="direct">직접입력</option>
-                </select>
-            </div>
-            <div class="form-group col-md-1.2">
-                <label>Type(code)</label>
-                <input type="text" class="form-control form-control-sm" id="workTypeCode" disabled>
-            </div>
-            <div class="form-group col-md-1.5">
-                <label>Sub Type</label>
-                <input type="text" class="form-control form-control-sm" id="workSubType" placeholder="ex> stdContract">
-            </div>
-            <div class="form-group col-md-2">
-                <label>Table Name</label>
-                <input type="text" class="form-control form-control-sm" id="tableName" placeholder="DB 테이블명"
-                       required>
-            </div>
-            <div class="form-group col-md-2">
-                <label>File Name(prefix)</label>
-                <input type="text" class="form-control form-control-sm" id="filePrefix"
-                       placeholder="생성할 파일명의 prefix(영문)" required>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                <label>Package path</label>
-                <input type="text" class="form-control form-control-sm" id="packageName" disabled placeholder=""
-                       required value="com.sds.portal">
-            </div>
-            <div class="form-group col-md-2">
-                <label>URL-group path</label>
-                <input type="text" class="form-control form-control-sm" id="apiGroupPath" required>
-            </div>
-            <div class="form-group col-md-2">
-                <label>URL-path</label>
-                <input type="text" class="form-control form-control-sm" id="apiPath" required>
-            </div>
-            <div class="form-group col-md-2">
-                <label>주석-업무명(한글)</label>
-                <input type="text" class="form-control form-control-sm" id="workName" required>
-            </div>
-            <div class="form-group col-md-2">
-                <label>주석-작성자(knox Id)</label>
-                <input type="text" class="form-control form-control-sm" id="author" required>
-            </div>
-        </div>
 
-            <button id="runButton" type="submit" class="btn btn-primary">실행</button>
-            <button id="exportButton" type="button" class="btn btn-primary">Export</button>
 
-    </form>
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Settings</button>
+        <button id="exportButton" type="button" class="btn btn-primary">파일 내보내기</button>
+    </div>
 
     <br>
 
@@ -128,6 +71,94 @@
 
 
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="needs-validation" novalidate action="javascript:run();">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>업무구분</label>
+                            <select id="workType" class="form-control form-control-sm">
+                                <option value="standard">기준정보</option>
+                                <option value="">예산</option>
+                                <option value="">예정가</option>
+                                <option value="contract">계약</option>
+                                <option value="work">시공</option>
+                                <option value="invoice">정산</option>
+                                <option value="common">공통</option>
+                                <option value="admin">공통(ADMIN)</option>
+                                <option value="direct">직접입력</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>업무구분(code)</label>
+                            <input type="text" class="form-control form-control-sm" id="workTypeCode" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>기능구분(sub package명)</label>
+                        <input type="text" class="form-control form-control-sm" id="workSubType"
+                               placeholder="ex> stdContract">
+                    </div>
+                    <div class="form-group">
+                        <label>Package path</label>
+                        <input type="text" class="form-control form-control-sm" id="packageName" disabled placeholder=""
+                               required value="com.sds.portal">
+                    </div>
+                    <div class="form-group">
+                        <label>DB 테이블명</label>
+                        <input type="text" class="form-control form-control-sm" id="tableName" placeholder="DB 테이블명"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label>File Name(prefix)</label>
+                        <input type="text" class="form-control form-control-sm" id="filePrefix"
+                               placeholder="생성할 파일명의 prefix(영문)" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>URL-group path</label>
+                            <input type="text" class="form-control form-control-sm" id="apiGroupPath" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>URL-path</label>
+                            <input type="text" class="form-control form-control-sm" id="apiPath" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>주석-업무명(한글)</label>
+                            <input type="text" class="form-control form-control-sm" id="workName" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>주석-작성자(knox Id)</label>
+                            <input type="text" class="form-control form-control-sm" id="author" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Path to save</label>
+                        <input type="text" class="form-control form-control-sm" id="savePath">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button id="runButton" type="submit" class="btn btn-primary">실행</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -181,11 +212,11 @@
         $('#packageName').val(BASE_PACKAGE + this.value);
     });
 
-    $('#workSubType').keyup(function(){
+    $('#workSubType').keyup(function () {
         $('#packageName').val(BASE_PACKAGE + $('#workTypeCode').val() + '.' + this.value);
     });
 
-    $('#exportButton').click(function(){
+    $('#exportButton').click(function () {
         alert('test');
         exportFile();
     });
@@ -196,14 +227,14 @@
             contentType: 'application/json',
             data: JSON.stringify({
                 workType: $('#workType').val(),
-                workSubType : $('#workSubType').val(),
+                workSubType: $('#workSubType').val(),
                 tableName: $('#tableName').val(),
                 filePrefix: $('#filePrefix').val(),
                 packageName: $('#packageName').val(),
                 apiGroupPath: $('#apiGroupPath').val(),
                 apiPath: $('#apiPath').val(),
-                workName : $('#workName').val(),
-                author : $('#author').val()
+                workName: $('#workName').val(),
+                author: $('#author').val()
             }),
             method: "POST", // HTTP 요청 메소드(GET, POST 등)
             dataType: "json" // 서버에서 보내줄 데이터의 타입 })
@@ -255,7 +286,7 @@
             dataType: "json" // 서버에서 보내줄 데이터의 타입 })
         })
             .done(function (json) {
-               alert(json);
+                alert(json);
             })
             .fail(function (xhr, status, errorThrown) {
                 console.log(xhr);

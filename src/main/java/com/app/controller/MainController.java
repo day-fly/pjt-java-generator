@@ -52,19 +52,18 @@ public class MainController {
     public ResponseEntity export(@RequestBody RequestDto requestDto) {
         try{
 
-            File voFile = new File("/"+requestDto.getWorkType()+"/"+requestDto.getWorkSubType()+"/"+ ConstValue.VO_PACKAGE);
-            File mapperFile = new File("/"+requestDto.getWorkType()+"/"+requestDto.getWorkSubType()+"/"+ ConstValue.MAPPER_PACKAGE);
-            this.vo.make(requestDto).writeTo(voFile);
-            this.mapper.make(requestDto).writeToFile(mapperFile);
-            //this.service.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
-            //this.serviceImpl.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
-            //this.controller.make(requestDto).writeTo(new File("c:\\EXPORT_SOURCE"));
+            requestDto.setClassNames();
+            this.vo.make(requestDto).writeTo(new File("c:\\EXPORT_SOURCE"));
+            this.mapper.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
+            this.service.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
+            this.serviceImpl.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
+            this.controller.make(requestDto).writeTo(new File("c:\\EXPORT_SOURCE"));
 
-//            File file = new File("c:\\EXPORT_SOURCE" + requestDto.getFilePrefix() + ConstValue.MAPPER + ".xml");
-//            FileWriter fw = new FileWriter(file);
-//            fw.write(this.mapperXML.make(requestDto));
-//            fw.flush();
-//            fw.close();
+            File file = new File("c:\\EXPORT_SOURCE\\" + requestDto.getFilePrefix() + ConstValue.MAPPER + ".xml");
+            FileWriter fw = new FileWriter(file);
+            fw.write(this.mapperXML.make(requestDto));
+            fw.flush();
+            fw.close();
 
             return new ResponseEntity(HttpStatus.OK);
         }catch (Exception e){

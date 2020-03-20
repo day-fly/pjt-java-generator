@@ -21,6 +21,7 @@ public class RequestDto {
     private String packageName;
     private String apiGroupPath;
     private String apiPath;
+    private String savePath;
 
     private ClassName voClassName;
     private ClassName searchVoClassName;
