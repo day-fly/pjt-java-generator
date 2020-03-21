@@ -35,7 +35,8 @@ public class Vo {
                     className = "String";
                     annotationSpecs.add(
                             AnnotationSpec.builder(Size.class)
-                                    .addMember("max", "$S", v.getCharacterMaximumLength())
+                                    .addMember("max", String.valueOf(v.getCharacterMaximumLength()))
+                                    //.addMember("max", "$S", v.getCharacterMaximumLength())
                                     .build()
                     );
             }

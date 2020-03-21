@@ -1,12 +1,11 @@
 package com.app.controller;
 
 import com.app.common.ConstValue;
+import com.app.dto.ExportResponseDto;
 import com.app.dto.RequestDto;
 import com.app.dto.ResponseDto;
 import com.app.service.generator.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.bcel.Const;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,26 +48,26 @@ public class MainController {
     }
 
     @PostMapping("/export")
-    public ResponseEntity export(@RequestBody RequestDto requestDto) {
+    public ResponseEntity<ExportResponseDto> export(@RequestBody RequestDto requestDto) {
         try{
 
             requestDto.setClassNames();
-            this.vo.make(requestDto).writeTo(new File("c:\\EXPORT_SOURCE"));
-            this.mapper.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
-            this.service.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
-            this.serviceImpl.make(requestDto).writeToFile(new File("c:\\EXPORT_SOURCE"));
-            this.controller.make(requestDto).writeTo(new File("c:\\EXPORT_SOURCE"));
+            this.vo.make(requestDto).writeTo(new File(requestDto.getSavePath()));
+            this.mapper.make(requestDto).writeToFile(new File(requestDto.getSavePath()));
+            this.service.make(requestDto).writeToFile(new File(requestDto.getSavePath()));
+            this.serviceImpl.make(requestDto).writeToFile(new File(requestDto.getSavePath()));
+            this.controller.make(requestDto).writeTo(new File(requestDto.getSavePath()));
 
-            File file = new File("c:\\EXPORT_SOURCE\\" + requestDto.getFilePrefix() + ConstValue.MAPPER + ".xml");
+            File file = new File(requestDto.getSavePath() + "/" + requestDto.getFilePrefix() + ConstValue.MAPPER + ".xml");
             FileWriter fw = new FileWriter(file);
             fw.write(this.mapperXML.make(requestDto));
             fw.flush();
             fw.close();
 
-            return new ResponseEntity(HttpStatus.OK);
+            return ResponseEntity.ok(ExportResponseDto.builder().message("파일이 생성되었습니다.").build());
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(ExportResponseDto.builder().message(e.getMessage()).build());
         }
     }
 

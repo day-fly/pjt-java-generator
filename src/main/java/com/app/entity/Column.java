@@ -2,7 +2,6 @@ package com.app.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Setter;
 
 @Builder
 @Data

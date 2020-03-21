@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import javax.lang.model.element.Modifier;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -37,10 +36,8 @@ public class Service {
                 .build();
 
         //package 생성
-        JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ConstValue.SERVICE_PACKAGE, service)
+        return JavaFile.builder(requestDto.getPackageName() + ConstValue.SERVICE_PACKAGE, service)
                 .build();
-
-        return javaFile;
     }
 
     private MethodSpec getMethod(String name, Object returnType, String voType) {

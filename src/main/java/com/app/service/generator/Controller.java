@@ -57,10 +57,8 @@ public class Controller {
                 .build();
 
         //package 생성
-        JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ".rest", controller)
+        return JavaFile.builder(requestDto.getPackageName() + ".rest", controller)
                 .build();
-
-        return javaFile;
     }
 
     private MethodSpec getMethod(String name, Class mappingClass, String apiPathPostfix, String voType, boolean isValid) {

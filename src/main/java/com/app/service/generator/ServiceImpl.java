@@ -45,19 +45,10 @@ public class ServiceImpl {
                 .build();
 
         //package 생성
-        JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ConstValue.SERVICE_PACKAGE, controller)
+        return JavaFile.builder(requestDto.getPackageName() + ConstValue.SERVICE_PACKAGE, controller)
                 .build();
-
-        return javaFile;
     }
 
-    /**
-     *
-     * @param name
-     * @param voType
-     * @param returnType
-     * @return
-     */
     private MethodSpec getMethod(String name, String voType, Object returnType) {
         return MethodSpec.methodBuilder(name)
                 .addModifiers(Modifier.PUBLIC)

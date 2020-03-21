@@ -2,10 +2,7 @@ package com.app.dto;
 
 import com.app.common.ConstValue;
 import com.squareup.javapoet.ClassName;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.thymeleaf.util.StringUtils;
 
 @Getter
@@ -16,7 +13,10 @@ public class RequestDto {
 
     private String workType;
     private String workSubType;
+
+    @Setter(AccessLevel.NONE)
     private String tableName;
+
     private String filePrefix;
     private String packageName;
     private String apiGroupPath;
@@ -31,6 +31,10 @@ public class RequestDto {
 
     private String workName; //업무명(한글)
     private String author;
+
+    public void setTableName(String tableName){
+        this.tableName = tableName.toLowerCase();
+    }
 
     public String getFirstLowerCaseFilePrefix() {
         if (StringUtils.isEmpty(this.filePrefix)) {

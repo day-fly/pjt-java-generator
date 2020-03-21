@@ -16,22 +16,12 @@
 <div class="p-3 mb-2 bg-dark text-white">
     <h4><strong>통합공사관리 pjt - Java Source Generator v0.1</strong></h4>
 </div>
-<!--<div class="alert alert-warning">-->
-<!--    <strong>1. 업무대분류 :</strong> 선택. 없을경우 '직접입력' 선택 후 업무대분류(코드)에 직접 입력합니다.<br>-->
-<!--    <strong>2. 테이블명 :</strong> 실제 테이블명 입력(ex> TN_STD_CODE), DB에서 스키마 정보를 읽어오기 때문에 사전에 생성되어 있어야합니다. <br>-->
-<!--    <strong>3. 파일명Prefix(영문) :</strong>-->
-<!--    테이블명을 따르는 것이 기본 원칙. => ex> TN_STD_CODE : Code, TN_COM_PROCESS_VARIABLE : ProcessVariable<br>-->
-<!--    <strong>4. package path : 자동세팅</strong> <br>-->
-<!--    <strong>5. API URL-group path, 6. API URL-path</strong> <br>-->
-<!--</div>-->
+
 <div class="container-fluid themed-container">
-
-
     <div>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Settings</button>
         <button id="exportButton" type="button" class="btn btn-primary">파일 내보내기</button>
     </div>
-
     <br>
 
     <ul class="nav nav-tabs">
@@ -78,21 +68,22 @@
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form class="needs-validation" novalidate action="javascript:run();">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>업무구분</label>
                             <select id="workType" class="form-control form-control-sm">
+                                <option value="">--선택--</option>
                                 <option value="standard">기준정보</option>
-                                <option value="">예산</option>
-                                <option value="">예정가</option>
+                                <option value="budget">예산</option>
+                                <option value="estimate">예정가</option>
                                 <option value="contract">계약</option>
                                 <option value="work">시공</option>
                                 <option value="invoice">정산</option>
@@ -112,54 +103,60 @@
                                placeholder="ex> stdContract">
                     </div>
                     <div class="form-group">
-                        <label>Package path</label>
+                        <label>Package path( com.sds.portal.업무구분.기능구분)</label>
                         <input type="text" class="form-control form-control-sm" id="packageName" disabled placeholder=""
                                required value="com.sds.portal">
                     </div>
                     <div class="form-group">
                         <label>DB 테이블명</label>
-                        <input type="text" class="form-control form-control-sm" id="tableName" placeholder="DB 테이블명"
+                        <input type="text" class="form-control form-control-sm" id="tableName"
+                               placeholder="ex> tn_con_std_contract"
                                required>
                     </div>
                     <div class="form-group">
                         <label>File Name(prefix)</label>
                         <input type="text" class="form-control form-control-sm" id="filePrefix"
-                               placeholder="생성할 파일명의 prefix(영문)" required>
+                               placeholder="ex> prefix가 Test면 TestVO, TestMapper, TestService, TestController" required>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>URL-group path</label>
-                            <input type="text" class="form-control form-control-sm" id="apiGroupPath" required>
+                            <label>url-group path(영문소문자,-)</label>
+                            <input type="text" class="form-control form-control-sm" id="apiGroupPath" required
+                                   placeholder="ex> /con">
                         </div>
                         <div class="form-group col-md-6">
-                            <label>URL-path</label>
-                            <input type="text" class="form-control form-control-sm" id="apiPath" required>
+                            <label>url-path(영문소문자,-)</label>
+                            <input type="text" class="form-control form-control-sm" id="apiPath" required
+                                   placeholder="ex> /std-contract">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>주석-업무명(한글)</label>
-                            <input type="text" class="form-control form-control-sm" id="workName" required>
+                            <input type="text" class="form-control form-control-sm" id="workName" required
+                                   placeholder="ex> 표준계약서">
                         </div>
                         <div class="form-group col-md-6">
                             <label>주석-작성자(knox Id)</label>
-                            <input type="text" class="form-control form-control-sm" id="author" required>
+                            <input type="text" class="form-control form-control-sm" id="author" required
+                                   placeholder="ex> hyun9.kim">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Path to save</label>
                         <input type="text" class="form-control form-control-sm" id="savePath">
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="initButton" type="button" class="btn btn-primary">초기화</button>
+                    <button id="runButton" type="submit" class="btn btn-primary">실행</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button id="runButton" type="submit" class="btn btn-primary">실행</button>
-            </div>
-        </div>
         </form>
     </div>
 </div>
 
-
+.
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="jquery-3.4.1.min.js"></script>
@@ -186,13 +183,25 @@
         }, false);
 
         //TEST
-        $('#tableName').val('account');
-        $('#filePrefix').val('Test');
-        $('#apiGroupPath').val('/group');
-        $('#apiPath').val('/work');
+        // $('#tableName').val('account');
+        // $('#filePrefix').val('Test');
+        // $('#apiGroupPath').val('/group');
+        // $('#apiPath').val('/work');
     })();
 
     $(document).ready(function () {
+        $('#workType').val(localStorage.getItem("sourceGenerator.workType"));
+        $('#workSubType').val(localStorage.getItem("sourceGenerator.workSubType"));
+        $('#tableName').val(localStorage.getItem("sourceGenerator.tableName"));
+        $('#filePrefix').val(localStorage.getItem("sourceGenerator.filePrefix"));
+        $('#packageName').val(localStorage.getItem("sourceGenerator.packageName"));
+        $('#apiGroupPath').val(localStorage.getItem("sourceGenerator.apiGroupPath"));
+        $('#apiPath').val(localStorage.getItem("sourceGenerator.apiPath"));
+        $('#workName').val(localStorage.getItem("sourceGenerator.workName"));
+        $('#author').val(localStorage.getItem("sourceGenerator.author"));
+        $('#savePath').val(localStorage.getItem("sourceGenerator.savePath"));
+
+
         $(workType).click();
     });
 
@@ -204,7 +213,7 @@
         } else {
             $('#workTypeCode').val(this.value);
             $('#workTypeCode').prop('disabled', true);
-            $('#packageName').val(BASE_PACKAGE + this.value);
+            $('#packageName').val(BASE_PACKAGE + this.value + '.' + $('#workSubType').val());
         }
     });
 
@@ -217,8 +226,25 @@
     });
 
     $('#exportButton').click(function () {
-        alert('test');
         exportFile();
+    });
+
+    $('#initButton').click(function(){
+        if(!confirm("입력값을 초기화하시겠습니까?")){
+            return;
+        }
+
+        $('input').val('');
+        $('select').val('');
+        localStorage.removeItem("sourceGenerator.workType");
+        localStorage.removeItem("sourceGenerator.workSubType");
+        localStorage.removeItem("sourceGenerator.tableName");
+        localStorage.removeItem("sourceGenerator.filePrefix");
+        localStorage.removeItem("sourceGenerator.packageName");
+        localStorage.removeItem("sourceGenerator.apiGroupPath");
+        localStorage.removeItem("sourceGenerator.apiPath");
+        localStorage.removeItem("sourceGenerator.workName");
+
     });
 
     function run() {
@@ -234,7 +260,9 @@
                 apiGroupPath: $('#apiGroupPath').val(),
                 apiPath: $('#apiPath').val(),
                 workName: $('#workName').val(),
-                author: $('#author').val()
+                author: $('#author').val(),
+                savePath : $('#savePath').val()
+
             }),
             method: "POST", // HTTP 요청 메소드(GET, POST 등)
             dataType: "json" // 서버에서 보내줄 데이터의 타입 })
@@ -262,6 +290,18 @@
                 $('pre code').each(function (i, block) {
                     hljs.highlightBlock(block);
                 });
+
+                localStorage.setItem("sourceGenerator.workType", $('#workType').val());
+                localStorage.setItem("sourceGenerator.workSubType", $('#workSubType').val());
+                localStorage.setItem("sourceGenerator.tableName", $('#tableName').val());
+                localStorage.setItem("sourceGenerator.filePrefix", $('#filePrefix').val());
+                localStorage.setItem("sourceGenerator.packageName", $('#packageName').val());
+                localStorage.setItem("sourceGenerator.apiGroupPath", $('#apiGroupPath').val());
+                localStorage.setItem("sourceGenerator.apiPath", $('#apiPath').val());
+                localStorage.setItem("sourceGenerator.workName", $('#workName').val());
+                localStorage.setItem("sourceGenerator.author", $('#author').val());
+                localStorage.setItem("sourceGenerator.savePath", $('#savePath').val());
+
             })
             .fail(function (xhr, status, errorThrown) {
 
@@ -280,19 +320,21 @@
                 apiGroupPath: $('#apiGroupPath').val(),
                 apiPath: $('#apiPath').val(),
                 workName: $('#workName').val(),
-                author: $('#author').val()
+                author: $('#author').val(),
+                savePath : $('#savePath').val()
             }),
             method: "POST", // HTTP 요청 메소드(GET, POST 등)
             dataType: "json" // 서버에서 보내줄 데이터의 타입 })
         })
             .done(function (json) {
-                alert(json);
+                alert(json.message);
             })
             .fail(function (xhr, status, errorThrown) {
                 console.log(xhr);
                 console.log(status);
             })
     }
+
 </script>
 </body>
 </html>

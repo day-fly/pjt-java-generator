@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
 
 import javax.lang.model.element.Modifier;
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -37,35 +38,20 @@ public class Mapper {
                 .build();
 
         //package 생성
-        JavaFile javaFile = JavaFile.builder(requestDto.getPackageName() + ConstValue.MAPPER_PACKAGE, mapper)
-                .build();
 
-        return javaFile;
-    }
-
-    private MethodSpec getMethod(String name, ParameterizedTypeName parameterizedTypeName, String voType) {
-        return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getFilePrefix() + ConstValue.MAPPER + "." + name + " : " + requestDto.getWorkName() + " " + AppUtil.getKorean(name))
-                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(parameterizedTypeName)
-                .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
+        return JavaFile.builder(requestDto.getPackageName() + ConstValue.MAPPER_PACKAGE, mapper)
                 .build();
     }
 
-    private MethodSpec getMethod(String name, Class clazz, String voType) {
+    private MethodSpec getMethod(String name, Object returnType, String voType) {
         return MethodSpec.methodBuilder(name)
                 .addJavadoc(requestDto.getFilePrefix() + ConstValue.MAPPER + "." + name + " : " + requestDto.getWorkName() + " " + AppUtil.getKorean(name))
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(clazz)
-                .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
-                .build();
-    }
-
-    private MethodSpec getMethod(String name, ClassName className, String voType) {
-        return MethodSpec.methodBuilder(name)
-                .addJavadoc(requestDto.getFilePrefix() + ConstValue.MAPPER + "." + name + " : " + requestDto.getWorkName() + " " + AppUtil.getKorean(name))
-                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(className)
+                .returns(
+                        returnType instanceof ParameterizedTypeName ? (ParameterizedTypeName) returnType
+                                : returnType instanceof ClassName ? (ClassName) returnType
+                                : TypeName.get((Type) returnType)
+                )
                 .addParameter(ConstValue.VO.equals(voType) ? getVoParameterSpec() : getSearchVoParameterSpec())
                 .build();
     }
